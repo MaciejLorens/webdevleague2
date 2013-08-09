@@ -20,3 +20,12 @@ gem 'unicorn'
 group :doc do
   gem 'sdoc', require: false
 end
+
+group :test do
+  gem 'rspec-rails', '~> 2.12'
+  gem 'factory_girl_rails'
+  gem 'capybara', '2.0.3'
+  gem 'capybara-webkit'
+  gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
+  gem 'simplecov', :require => false
+end

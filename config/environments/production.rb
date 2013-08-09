@@ -80,4 +80,6 @@ Webdevleague::Application.configure do
 
   # devise default_url_options:
   config.action_mailer.default_url_options = { :host => 'HOST!' }
+
+  Hirb.enable
 end
