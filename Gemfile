@@ -21,6 +21,10 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :development do
+  gem 'quiet_assets'
+end
+
 group :test do
   gem 'rspec-rails', '~> 2.12'
   gem 'factory_girl_rails'

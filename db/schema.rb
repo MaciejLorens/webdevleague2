@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130805200045) do
+ActiveRecord::Schema.define(version: 20130810150607) do
+
+  create_table "divisions", force: true do |t|
+    t.integer  "league_id"
+    t.integer  "skill_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "leagues", force: true do |t|
     t.string   "league"
@@ -20,12 +27,24 @@ ActiveRecord::Schema.define(version: 20130805200045) do
     t.datetime "updated_at"
   end
 
+  create_table "members", force: true do |t|
+    t.integer  "division_id"
+    t.integer  "user_id"
+    t.integer  "points",      default: 50, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "skills", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", force: true do |t|
     t.string   "nick",                                null: false
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
-    t.integer  "points",                 default: 50, null: false
-    t.integer  "league_id",                           null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

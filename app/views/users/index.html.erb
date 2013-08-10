@@ -5,9 +5,7 @@
   <tr>
     <th>Nick</th>
     <th>Email</th>
-    <th>League</th>
-    <th>Rank</th>
-    <th>Points</th>
+    <th>Skills</th>
     <th>Last Sign In</th>
     <th>Actions</th>
   </tr>
@@ -15,10 +13,12 @@
     <tr>
       <td><%= user.nick %></td>
       <td><%= user.email %></td>
-      <td><%= user.league.league %></td>
-      <td><%= user.league.rank %></td>
-      <td><%= user.points %></td>
-      <td><%= time_ago_in_words(user.last_sign_in_at) %> ago</td>
+      <td><%= user.skills.map(&:name).join(', ') %></td>
+      <td>
+        <% if user.last_sign_in_at.present? %>
+          <%= time_ago_in_words(user.last_sign_in_at) %> ago
+        <% end %>
+      </td>
       <td>
         <%= link_to 'Edit', user_path(user) %>
         <%#= link_to 'Delete', user_path(user), method: 'delete' %>

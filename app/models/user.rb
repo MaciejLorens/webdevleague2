@@ -4,10 +4,13 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
-  validates_presence_of :email, :encrypted_password, :league_id
+  validates_presence_of :email, :encrypted_password
   validates_uniqueness_of :email
 
-  belongs_to :league
+  has_many :leagues, through: :divisions
+  has_many :skills, through: :divisions
+  has_many :members
+  has_many :divisions, through: :members
 
   def update_points(value)
     self.points += value

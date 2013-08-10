@@ -4,4 +4,21 @@ League::ALL_LEAGUE.each do |kind|
   end
 end
 
-User.create(nick: 'mcksnk', email: 'mckl@poczta.fm', password: 'samplepass', league_id: League.bronze(1).id)
+Skill.create(name: 'Ruby on Rails')
+Skill.create(name: 'Ruby')
+Skill.create(name: 'HTML5')
+Skill.create(name: 'CoffeeScript')
+Skill.create(name: 'CSS3')
+
+Skill.all.each do |skill|
+  skill.leagues = League.all
+end
+
+User.create(nick: "mcksnk", email: "mckl@poczta.fm", password: "samplepass")
+10.times do |i|
+  user = User.create(nick: "mcksnk#{i}", email: "mckl#{i}@poczta.fm", password: "samplepass#{i}")
+  Skill.all.each do |skill|
+    division = Division.by_skill(skill.name).by_league('Bronze').by_rank(1).first
+    user.members.create(division_id: division.id, points: 50)
+  end
+end

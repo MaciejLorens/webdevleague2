@@ -1,7 +1,9 @@
 class League < ActiveRecord::Base
   validates_presence_of :league, :rank
 
-  has_many :users
+  has_many :divisions
+  has_many :users, through: :divisions
+  has_many :skills, through: :divisions
 
   scope :bronze, ->(rank) { where('league = "Bronze" AND rank = ?', rank).first }
   scope :silver, ->(rank) { where('league = "Silver" AND rank = ?', rank).first }
