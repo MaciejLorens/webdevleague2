@@ -1,0 +1,28 @@
+<h1>User#index</h1>
+<p>Find me in app/views/user/index.html.erb</p>
+
+<table class='table'>
+  <tr>
+    <th>Nick</th>
+    <th>Email</th>
+    <th>League</th>
+    <th>Rank</th>
+    <th>Points</th>
+    <th>Last Sign In</th>
+    <th>Actions</th>
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.nick %></td>
+      <td><%= user.email %></td>
+      <td><%= user.league.league %></td>
+      <td><%= user.league.rank %></td>
+      <td><%= user.points %></td>
+      <td><%= time_ago_in_words(user.last_sign_in_at) %> ago</td>
+      <td>
+        <%= link_to 'Edit', user_path(user) %>
+        <%#= link_to 'Delete', user_path(user), method: 'delete' %>
+      </td>
+    </tr>
+  <% end %>
+</table>

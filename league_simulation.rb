@@ -4,7 +4,7 @@ WIN_POINTS = 20
 LOSE_POINTS = 20
 
 # user
-class User
+class UserSimulation
   attr_accessor :points, :wining_rate, :league, :rank
   def initialize(points, wining_rate, rank)
     @points = points
@@ -24,7 +24,7 @@ def new_users
   # generate table of users
   users = []
   USER_COUNT.times do
-    users << User.new(50, generate(0.5, 0.075), 1)
+    users << UserSimulation.new(50, generate(0.5, 0.075), 1)
   end
   users
 end
