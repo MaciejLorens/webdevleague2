@@ -34,4 +34,8 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def members_by_skill_name(skill_name)
+    self.members.select{|member| member.division.skill.name == skill_name}.first
+  end
 end

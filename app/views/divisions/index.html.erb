@@ -1,0 +1,27 @@
+<% @divisions.each do |division| %>
+
+  <h1><%= division.skill.name %></h1>
+
+  <h3><%= division.league.league %> <%= division.league.rank %></h3>
+
+  <table class='table'>
+    <tr>
+      <th>Place</th>
+      <th>Nick</th>
+      <th>Points</th>
+      <th>Difference</th>
+    </tr>
+    <% division.users.includes(:members).order('members.points DESC').each_with_index do |user, index| %>
+      <% if current_user == user %>
+        <tr id="<%= user.id %>" style="color: blue; background-color: #efefef;">
+      <% else %>
+        <tr id="<%= user.id %>">
+      <% end %>
+      <td><%= index + 1 %></td>
+      <td><%= user.nick %></td>
+      <td><%= user.members.first.points %></td>
+      <td><%= difference(rand(10) - 5) %> </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
