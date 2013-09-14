@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Webdevleague" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : 'WebDevLeague' %></title>
     <%= csrf_meta_tags %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -44,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <%= link_to 'Webdevleague', home_path, class: 'brand' %>
+          <%= link_to 'WebDevLeague', home_path, class: 'brand' %>
           <div class="container nav-collapse">
             <ul class="nav">
               <li><%#= link_to 'Browse Leagues', divisions_path %></li>
@@ -53,7 +53,7 @@
             <% if user_signed_in? %>
               <div id="user_signed_in" class="pull-right">
                 hello <%= current_user.email %>! Your skills:
-                <%= select_tag 'skill_select', options_for_select(current_user.divisions.map{|division| [division.skill.name, division.id]}.insert(0, 'All'), params[:id]), class: 'span2' %>
+                <%= select_tag 'skill_select', options_for_select(current_user.divisions.includes(:skill).map{|division| [division.skill.name, division.id]}.insert(0, 'All'), params[:id]), class: 'span2' %>
                 <%= link_to 'Sign Out', destroy_user_session_path, method: 'delete' %>
               </div>
             <% else %>
