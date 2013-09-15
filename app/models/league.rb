@@ -14,7 +14,7 @@ class League < ActiveRecord::Base
   scope :grand_master, ->(rank) { where('league = "GrandMaster" AND rank = ?', rank).first }
 
   RANK_MAX = 4
-  ALL_LEAGUE = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'GrandMaster']
+  ALL_LEAGUE = %w(Bronze Silver Gold Platinum Diamond Master GrandMaster)
 
   def next
     if self.rank == RANK_MAX

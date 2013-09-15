@@ -12,30 +12,35 @@ class User < ActiveRecord::Base
   has_many :members
   has_many :divisions, through: :members
 
-  def update_points(value)
-    self.points += value
-    if self.points >= 100
+  def update_points(skill_name, value)
+    member = member_by_skill(skill_name)
+    raise if member.nil?
+
+    member.points += value
+    if member.points >= 100
       User.transaction do
-        if !self.league.is?('GrandMaster', 4)
-          self.points -= 100
-          self.league = self.league.next
+        unless member.league.is?('GrandMaster', 4)
+          member.points -= 100
+          member.league = member.league.next
         end
       end
     end
 
-    if self.points < 0
+    if member.points < 0
       User.transaction do
-        if self.league.is?('Bronze', 1)
-          self.points = 0
+        if member.league.is?('Bronze', 1)
+          member.points = 0
         else
-          self.points += 100
-          self.league = self.league.previous
+          member.points += 100
+          member.league = member.league.previous
         end
       end
     end
+
+    member.save
   end
 
-  def members_by_skill_name(skill_name)
-    self.members.select{|member| member.division.skill.name == skill_name}.first
+  def member_by_skill(skill_name)
+    self.members.joins(:division, :skill).where('skills.name = ?', skill_name).readonly(false).first
   end
 end
