@@ -11,6 +11,7 @@ gem 'hirb'
 gem 'less-rails'
 gem 'mysql2'
 gem 'sass-rails', '~> 4.0.0.rc1'
+gem 'slim-rails'
 gem 'puma'
 gem 'therubyracer', platforms: :ruby
 gem 'twitter-bootstrap-rails'

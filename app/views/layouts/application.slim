@@ -1,0 +1,75 @@
+doctype
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta content="IE=Edge,chrome=1" http-equiv="X-UA-Compatible"
+    meta content="width=(device-width,)initial-scale=1.0" name="viewport"
+    title= content_for?(:title) ? yield(:title) : 'WebDevLeague'
+    = csrf_meta_tags
+    /! Le HTML5 shim, for IE6-8 support of HTML elements
+    /![if lt IE 9]
+      | <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js" type="text/javascript"></script>
+    = stylesheet_link_tag "application", :media => "all"
+    /! For third-generation iPad with high-resolution Retina display:
+    /! Size should be 144 x 144 pixels
+    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
+    /! For iPhone with high-resolution Retina display:
+    /! Size should be 114 x 114 pixels
+    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
+    /! For first- and second-generation iPad:
+    /! Size should be 72 x 72 pixels
+    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
+    /! For non-Retina iPhone, iPod Touch, and Android 2.1+ devices:
+    /! Size should be 57 x 57 pixels
+    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png'
+    /! For all other devices
+    /! Size should be 32 x 32 pixels
+    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          = link_to 'WebDevLeague', home_path, class: 'brand'
+          .container.nav-collapse
+            ul.nav
+              li = link_to 'Your Leagues', divisions_path
+              li = link_to 'Questions', divisions_path
+            - if user_signed_in?
+              button.btn.btn-danger.pull-left.offset1 FIGHT!
+              = select_tag 'skill_select', options_for_select(current_user.divisions.includes(:skill).map { |division| [division.skill.name, division.id] }.insert(0, 'All'), params[:id]), class: 'span2 pull-left', style: 'margin: 5px 0 0 50px'
+              #user_signed_in.pull-right
+                = current_user.email
+                = link_to 'Sign Out', destroy_user_session_path, method: 'delete'
+            - else
+              = form_tag user_session_path, id: 'login-form', class: 'form-inline pull-right' do
+                label
+                  = check_box_tag 'user[remember_me]'
+                  | Remember me
+                = text_field_tag 'user[email]', nil, class: 'input-small', placeholder: 'Email'
+                = password_field_tag 'user[password]', nil, class: 'input-small', placeholder: 'Password'
+                = submit_tag 'Sign in', id: 'login-submit', class: 'btn'
+
+    .container
+      .row
+        .span8
+          = bootstrap_flash
+          = yield
+        .span3.offset1
+          .well.sidebar-nav
+            h3 Messages
+            div style="background-color: grey"
+              h4 Message 1
+              div Lorem Impus Dolor Sit Amet
+              div +5
+            div style="background-color: grey"
+              h4 Message 1
+              div Lorem Impus Dolor Sit Amet
+              div +5
+            div style="background-color: grey"
+              h4 Message 1
+              div Lorem Impus Dolor Sit Amet
+              div +5
+      footer
+        p
+          | &copy; Webdevleague #{Time.now.year}
+    = javascript_include_tag 'application'
