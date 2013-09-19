@@ -15,3 +15,12 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+
+//jQuery(document).ready(function() {
+//  setTimeout(function() {
+//    var source = new EventSource('/browser');
+//    source.addEventListener('refresh', function(e) {
+//      console.log('got refresh with data: ' + e.data)
+//    });
+//  }, 1);
+//});

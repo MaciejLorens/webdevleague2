@@ -1,4 +1,5 @@
 Webdevleague::Application.routes.draw do
+  #get 'browser' => 'browser#index'
   devise_for :users
   get '/home' => 'home#index'
 

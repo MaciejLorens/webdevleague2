@@ -30,5 +30,8 @@ Webdevleague::Application.configure do
   # devise default_url_options:
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
+  config.preload_frameworks = true
+  config.allow_concurrency = true
+
   Hirb.enable
 end
