@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130810150607) do
+ActiveRecord::Schema.define(version: 20130928190001) do
+
+  create_table "answers", force: true do |t|
+    t.integer  "question_id"
+    t.string   "content"
+    t.boolean  "correct"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "diagrams", force: true do |t|
+    t.integer  "question_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
 
   create_table "divisions", force: true do |t|
     t.integer  "league_id"
@@ -31,6 +47,20 @@ ActiveRecord::Schema.define(version: 20130810150607) do
     t.integer  "division_id"
     t.integer  "user_id"
     t.integer  "points",      default: 50, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "questions", force: true do |t|
+    t.string   "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "questions_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.boolean  "owner",       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -3,8 +3,10 @@ Webdevleague::Application.routes.draw do
   devise_for :users
   get '/home' => 'home#index'
 
-  resources :users, only: %w(index show)
+  resources :diagrams
   resources :divisions, only: %w(index show)
+  resources :users, only: %w(index show)
+  resources :questions
 
   root :to => 'home#index'
 end

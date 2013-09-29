@@ -10,6 +10,24 @@ describe User do
     @user.members << @member
   end
 
+  context 'test questions assigments' do
+    before(:each) do
+      @question = create :question
+    end
+
+    it 'adds to answered questions' do
+      answered_questions_count = @user.answered_questions.count
+      @user.answer_question!(@question)
+      @user.answered_questions.count.should == answered_questions_count + 1
+    end
+
+    it 'adds to owned questions' do
+      owned_questions_count = @user.owned_questions.count
+      @user.own_question!(@question)
+      @user.owned_questions.count.should == owned_questions_count + 1
+    end
+  end
+
   it 'has proper league assigned' do
     @user.skills.should_not be_empty
     @user.leagues.should_not be_empty

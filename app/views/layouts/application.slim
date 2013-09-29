@@ -33,7 +33,7 @@ html lang="en"
           .container.nav-collapse
             ul.nav
               li = link_to 'Your Leagues', divisions_path
-              li = link_to 'Questions', divisions_path
+              li = link_to 'Questions', questions_path
             - if user_signed_in?
               button.btn.btn-danger.pull-left.offset1 FIGHT!
               = select_tag 'skill_select', options_for_select(current_user.divisions.includes(:skill).map { |division| [division.skill.name, division.id] }.insert(0, 'All'), params[:id]), class: 'span2 pull-left', style: 'margin: 5px 0 0 50px'

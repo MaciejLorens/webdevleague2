@@ -11,6 +11,24 @@ class User < ActiveRecord::Base
   has_many :skills, through: :divisions
   has_many :members
   has_many :divisions, through: :members
+  has_many :questions_users
+  has_many :questions, through: :questions_users
+
+  def owned_questions
+    questions.joins(:questions_users).where('questions_users.owner = ?', true)
+  end
+
+  def answered_questions
+    questions.joins(:questions_users).where('questions_users.owner = ?', false)
+  end
+
+  def own_question!(question)
+    questions_users.create(question_id: question.id, owner: true)
+  end
+
+  def answer_question!(question)
+    questions_users.create(question_id: question.id, owner: false)
+  end
 
   def update_points(skill_name, value)
     member = member_by_skill(skill_name)
