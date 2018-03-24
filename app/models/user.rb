@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   has_many :questions_users
   has_many :questions, through: :questions_users
 
+  MAX_RANK_POINTS = 100
+
   def owned_questions
     questions.joins(:questions_users).where('questions_users.owner = ?', true)
   end
@@ -35,10 +37,10 @@ class User < ActiveRecord::Base
     raise if member.nil?
 
     member.points += value
-    if member.points >= 100
+    if member.points >= MAX_RANK_POINTS
       User.transaction do
         unless member.league.is?('GrandMaster', 4)
-          member.points -= 100
+          member.points -= MAX_RANK_POINTS
           member.league = member.league.next
         end
       end
@@ -49,7 +51,7 @@ class User < ActiveRecord::Base
         if member.league.is?('Bronze', 1)
           member.points = 0
         else
-          member.points += 100
+          member.points += MAX_RANK_POINTS
           member.league = member.league.previous
         end
       end

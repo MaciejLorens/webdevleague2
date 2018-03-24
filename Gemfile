@@ -35,4 +35,5 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
   gem 'simplecov', :require => false
+  gem 'faker'
 end

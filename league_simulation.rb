@@ -1,15 +1,16 @@
-USER_COUNT = 2000
-BATTLES = 200_000
-WIN_POINTS = 20
-LOSE_POINTS = 20
+USER_COUNT = 10000
+WIN_POINTS = 12
+LOSE_POINTS = 12
 
 # user
 class UserSimulation
-  attr_accessor :points, :wining_rate, :league, :rank
+  attr_accessor :points, :wining_rate, :league, :rank, :battles_count
+
   def initialize(points, wining_rate, rank)
     @points = points
     @wining_rate = wining_rate
     @rank = rank
+    @battles_count = 0
   end
 end
 
@@ -17,14 +18,14 @@ def new_users
   # normal distribution
   def generate(average, deviation)
     sum = 0.0
-    12.times{ sum += rand}
+    12.times { sum += rand }
     ((sum - 6) * deviation) + average
   end
 
   # generate table of users
   users = []
   USER_COUNT.times do
-    users << UserSimulation.new(50, generate(0.5, 0.075), 1)
+    users << UserSimulation.new(100, generate(0.5, 0.15), 0)
   end
   users
 end
@@ -52,6 +53,8 @@ def print_results(users)
     end
   end
 
+  result[:average_battles] = users.map(&:battles_count).inject(0, :+) / users.count
+
   p "bronze = #{result[:bronze]} | #{result[:bronze].to_f / users.count * 100}"
   p "silver = #{result[:silver]} | #{result[:silver].to_f / users.count * 100}"
   p "gold = #{result[:gold]} | #{result[:gold].to_f / users.count * 100}"
@@ -59,6 +62,8 @@ def print_results(users)
   p "diamond = #{result[:diamond]} | #{result[:diamond].to_f / users.count * 100}"
   p "master = #{result[:master]} | #{result[:master].to_f / users.count * 100}"
   p "grand_master = #{result[:grand_master]} | #{result[:grand_master].to_f / users.count * 100}"
+  p "average_battles = #{result[:average_battles]}"
+  p "months to play = #{result[:average_battles].to_f / 2 / 30}"
 end
 
 def random_users_to_fight(users)
@@ -70,47 +75,54 @@ def random_users_to_fight(users)
 end
 
 def game(users)
-  # battle
-  BATTLES.times do
-    user1 , user2 = random_users_to_fight(users)
-    next if user1 == user2
+  # signle battle
+  user1, user2 = random_users_to_fight(users)
+  return if user1 == user2
 
-    bonus_points = case user1.rank
-                     when 0..3
-                       10
-                     when 4..7
-                       7
-                     when 8..11
-                       4
-                     when 12..15
-                       1
-                     else
-                       0
-                   end
+  user1.battles_count += 1
+  user2.battles_count += 1
 
-    wining_rate_delta = user1.wining_rate - user2.wining_rate
-    if rand() + wining_rate_delta > 0.5
-      user1.points += WIN_POINTS + bonus_points + 2 * (user2.rank - user1.rank)
-      user2.points -= LOSE_POINTS - 4 * (user2.rank - user1.rank)
-      user2.points = 0 if user2.points < 0
-    else
-      user2.points += WIN_POINTS + bonus_points + bonus_points + 2 * (user1.rank - user2.rank)
-      user1.points -= LOSE_POINTS - 4 * (user1.rank - user2.rank)
-      user1.points = 0 if user2.points < 0
-    end
+  bonus_points = case user1.rank
+                   when 0..3
+                     10
+                   when 4..7
+                     8
+                   when 8..11
+                     6
+                   when 12..15
+                     4
+                   when 16..19
+                     2
+                   when 20..23
+                     0
+                   when 24..27
+                     0
+                   else
+                     0
+                 end
 
-    user1.rank = user1.points / 100
-    user2.rank = user2.points / 100
+  if user1.wining_rate > user2.wining_rate
+    user1.points += WIN_POINTS  #+ 2 * (user2.rank - user1.rank) + bonus_points
+    user2.points -= LOSE_POINTS #+ 2 * (user2.rank - user1.rank)
+    #user2.points = 0 if user2.points < 0
+  else
+    user2.points += WIN_POINTS #+ 2 * (user1.rank - user2.rank) + bonus_points
+    user1.points -= LOSE_POINTS #+ 2 * (user1.rank - user2.rank)
+    #user1.points = 0 if user2.points < 0
   end
+
+  user1.rank = user1.points / 100
+  user2.rank = user2.points / 100
 end
 
-BABY_BORD = 100
-users = []
-BABY_BORD.times do
-  p "========================================="
-  users = users + new_users()
-  p "----------- users: #{users.count} ------------- "
+
+users = new_users
+
+(300 * USER_COUNT).times do |i|
   game(users)
-  print_results(users)
-  p "========================================="
+
+  if i % 100 == 0
+    print_results(users)
+    p "========================================="
+  end
 end
